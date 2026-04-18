@@ -1,6 +1,5 @@
 package com.fullcycle.admin.catalogo.infrastructure.configuration;
 
-import com.nimbusds.jose.shaded.json.JSONObject;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -37,26 +36,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> {
-                    csrf.disable();
-                })
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> {
                     authorize
-                            .antMatchers("/cast_members*").hasAnyRole(ROLE_ADMIN, ROLE_CAST_MEMBERS)
-                            .antMatchers("/categories*").hasAnyRole(ROLE_ADMIN, ROLE_CATEGORIES)
-                            .antMatchers("/genres*").hasAnyRole(ROLE_ADMIN, ROLE_GENRES)
-                            .antMatchers("/videos*").hasAnyRole(ROLE_ADMIN, ROLE_VIDEOS)
+                            .requestMatchers("/cast_members*").hasAnyRole(ROLE_ADMIN, ROLE_CAST_MEMBERS)
+                            .requestMatchers("/categories*").hasAnyRole(ROLE_ADMIN, ROLE_CATEGORIES)
+                            .requestMatchers("/genres*").hasAnyRole(ROLE_ADMIN, ROLE_GENRES)
+                            .requestMatchers("/videos*").hasAnyRole(ROLE_ADMIN, ROLE_VIDEOS)
                             .anyRequest().hasRole(ROLE_ADMIN);
                 })
                 .oauth2ResourceServer(oauth -> {
-                    oauth.jwt()
-                            .jwtAuthenticationConverter(new KeycloakJwtConverter());
+                    oauth.jwt(jwt -> jwt.jwtAuthenticationConverter(new KeycloakJwtConverter()));
                 })
                 .sessionManagement(session -> {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
                 .headers(headers -> {
-                    headers.frameOptions().sameOrigin();
+                    headers.frameOptions(frame -> frame.sameOrigin());
                 })
                 .build();
     }
@@ -101,12 +97,13 @@ public class SecurityConfig {
                     .collect(Collectors.toSet());
         }
 
+        @SuppressWarnings("unchecked")
         private Stream<String> extractResourceRoles(final Jwt jwt) {
 
             final Function<Map.Entry<String, Object>, Stream<String>> mapResource =
                     resource -> {
                         final var key = resource.getKey();
-                        final var value = (JSONObject) resource.getValue();
+                        final var value = (Map<String, Object>) resource.getValue();
                         final var roles = (Collection<String>) value.get(ROLES);
                         return roles.stream().map(role -> key.concat(SEPARATOR).concat(role));
                     };
@@ -123,6 +120,7 @@ public class SecurityConfig {
                     .stream();
         }
 
+        @SuppressWarnings("unchecked")
         private Stream<String> extractRealmRoles(final Jwt jwt) {
             return Optional.ofNullable(jwt.getClaimAsMap(REALM_ACCESS))
                     .map(resource -> (Collection<String>) resource.get(ROLES))

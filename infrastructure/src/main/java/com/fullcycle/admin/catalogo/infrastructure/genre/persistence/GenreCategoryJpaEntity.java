@@ -2,7 +2,7 @@ package com.fullcycle.admin.catalogo.infrastructure.genre.persistence;
 
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity

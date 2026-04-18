@@ -8,7 +8,7 @@ import com.fullcycle.admin.catalogo.domain.video.Rating;
 import com.fullcycle.admin.catalogo.domain.video.Video;
 import com.fullcycle.admin.catalogo.domain.video.VideoID;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.Instant;
 import java.time.Year;
 import java.util.HashSet;

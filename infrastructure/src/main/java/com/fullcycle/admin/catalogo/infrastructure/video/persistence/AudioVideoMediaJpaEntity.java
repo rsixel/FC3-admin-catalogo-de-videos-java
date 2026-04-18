@@ -3,7 +3,7 @@ package com.fullcycle.admin.catalogo.infrastructure.video.persistence;
 import com.fullcycle.admin.catalogo.domain.video.AudioVideoMedia;
 import com.fullcycle.admin.catalogo.domain.video.MediaStatus;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity(name = "AudioVideoMedia")
 @Table(name = "videos_video_media")

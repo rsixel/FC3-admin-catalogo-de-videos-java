@@ -2,7 +2,7 @@ package com.fullcycle.admin.catalogo.infrastructure.video.persistence;
 
 import com.fullcycle.admin.catalogo.domain.genre.GenreID;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity(name = "VideoGenre")

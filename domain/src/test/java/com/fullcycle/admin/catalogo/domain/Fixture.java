@@ -6,7 +6,7 @@ import com.fullcycle.admin.catalogo.domain.category.Category;
 import com.fullcycle.admin.catalogo.domain.genre.Genre;
 import com.fullcycle.admin.catalogo.domain.utils.IdUtils;
 import com.fullcycle.admin.catalogo.domain.video.*;
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 
 import java.time.Year;
 import java.util.Set;
